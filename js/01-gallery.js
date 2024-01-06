@@ -23,16 +23,12 @@ function startGame() {
 
   updateOutput();
 
-  while (remainingLetters > 0) {
-    const guess = prompt("Guess a letter, or click Cancel to stop playing");
-    if (guess === null) {
-      break;
-    } else if (guess.length !== 1) {
-      alert("Please enter a single letter");
-    } else {
+  document.addEventListener("keypress", function (event) {
+    const guess = event.key.toLowerCase();
+    if (remainingLetters > 0) {
       let correctGuess = false;
       for (let j = 0; j < word.length; j++) {
-        if (word[j] === guess) {
+        if (word[j] === guess && answerArray[j] === "_") {
           answerArray[j] = guess;
           remainingLetters--;
           correctGuess = true;
@@ -41,8 +37,9 @@ function startGame() {
       if (correctGuess) {
         updateOutput();
       }
+      if (remainingLetters === 0) {
+        alert("Good job! The answer was " + word);
+      }
     }
-  }
-
-  alert("Good job! The answer was " + word);
+  });
 }
