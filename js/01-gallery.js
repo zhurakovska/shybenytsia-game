@@ -1,45 +1,54 @@
-function startGame() {
-  const words = ["dog", "monkey", "amazing", "cat", "land"];
-  const word = pickWord(words);
-  let answerArray = [];
-  setAnswerArray(word);
+const words = ["dog", "monkey", "amazing", "cat", "land"];
+let word = words[Math.floor(Math.random() * words.length)];
+let answerArray = Array(word.length).fill("_");
+let remainingLetters = word.length;
+let attempts = 6;
 
-  let remainingLetters = word.length;
-  const outputElement = document.getElementById("output");
+const wordElement = document.getElementById("word");
+const attemptsLeftElement = document.getElementById("attemptsLeft");
+const letterInput = document.getElementById("letterInput");
+const guessButton = document.getElementById("guessButton");
+const resultElement = document.getElementById("result");
 
-  function pickWord(words) {
-    return words[Math.floor(Math.random() * words.length)];
-  }
-
-  function setAnswerArray(word) {
-    for (let i = 0; i < word.length; i++) {
-      answerArray[i] = "_";
-    }
-  }
-
-  function updateOutput() {
-    outputElement.textContent = answerArray.join(" ");
-  }
-
-  updateOutput();
-
-  document.addEventListener("keypress", function (event) {
-    const guess = event.key.toLowerCase();
-    if (remainingLetters > 0) {
-      let correctGuess = false;
-      for (let j = 0; j < word.length; j++) {
-        if (word[j] === guess && answerArray[j] === "_") {
-          answerArray[j] = guess;
-          remainingLetters--;
-          correctGuess = true;
-        }
-      }
-      if (correctGuess) {
-        updateOutput();
-      }
-      if (remainingLetters === 0) {
-        alert("Good job! The answer was " + word);
-      }
-    }
-  });
+function updateWord() {
+  wordElement.textContent = answerArray.join(" ");
 }
+
+function checkLetter(letter) {
+  let correctGuess = false;
+  for (let i = 0; i < word.length; i++) {
+    if (word[i] === letter && answerArray[i] === "_") {
+      answerArray[i] = letter;
+      remainingLetters--;
+      correctGuess = true;
+    }
+  }
+  if (!correctGuess) {
+    attempts--;
+    attemptsLeftElement.textContent = attempts;
+  }
+  updateWord();
+  checkGameStatus();
+}
+
+function checkGameStatus() {
+  if (remainingLetters === 0) {
+    resultElement.textContent = "Congratulations! You won!";
+    guessButton.disabled = true;
+  } else if (attempts === 0) {
+    resultElement.textContent = "You lost! The word was: " + word;
+    guessButton.disabled = true;
+  }
+}
+
+updateWord();
+
+guessButton.addEventListener("click", function () {
+  const letter = letterInput.value.toLowerCase().trim();
+  if (letter && letter.length === 1 && letter.match(/[a-z]/i)) {
+    checkLetter(letter);
+  } else {
+    resultElement.textContent = "Please enter a valid single letter!";
+  }
+  letterInput.value = "";
+});

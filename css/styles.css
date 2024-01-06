@@ -5,13 +5,41 @@
 body {
   font-family: Arial, sans-serif;
   text-align: center;
+  background-color: aqua;
+}
+h1 {
+  color: #333;
 }
 
-.game-container {
-  margin-top: 50px;
+#word {
+  font-size: 2em;
+  margin: 20px 0;
 }
 
-.output {
-  font-size: 24px;
-  margin-bottom: 20px;
+#letterInput {
+  padding: 5px;
+  margin-right: 5px;
+}
+
+#guessButton {
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+}
+
+#guessButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+#attempts {
+  margin-top: 20px;
+}
+
+#result {
+  margin-top: 20px;
+  font-weight: bold;
+  color: #e74c3c;
 }

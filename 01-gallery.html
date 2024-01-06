@@ -14,15 +14,13 @@
   </head>
   <body>
     <p><a href="index.html">Go back</a></p>
-    <div class="game-container">
-      <div class="output" id="output"></div>
-      <button id="startButton">Start Game</button>
-    </div>
-
+    <h1>Hangman Game</h1>
+    <div id="word"></div>
+    <label for="letterInput">Enter a letter: </label>
+    <input type="text" id="letterInput" maxlength="1" />
+    <button id="guessButton">Guess</button>
+    <div id="attempts">Attempts left: <span id="attemptsLeft">6</span></div>
+    <div id="result"></div>
     <script src="js/01-gallery.js" type="module"></script>
-    <script>
-      const startButton = document.getElementById("startButton");
-      startButton.addEventListener("click", startGame);
-    </script>
   </body>
 </html>
