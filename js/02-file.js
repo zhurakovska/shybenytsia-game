@@ -1,53 +1,52 @@
-// let newHeadingText = prompt("Please provide a new heading:");
-// $("#main-heading").text(newHeadingText);
-//отримуємо випадкове число від 0 до sizes
+$(document).ready(function () {
+  const getRandomNumber = function (size) {
+    return Math.floor(Math.random() * size);
+  };
 
-const getRandomNumber = function (size) {
-  return Math.floor(Math.random() * size);
-};
+  const getDistance = function (event, target) {
+    let diffX = event.offsetX - target.x;
+    let diffY = event.offsetY - target.y;
+    return Math.sqrt(diffX * diffX + diffY * diffY);
+  };
 
-//вираховуємо відстань між подією та ціллю
+  const getDistanceHint = function (distance) {
+    if (distance < 10) {
+      return "Boiling hot!";
+    } else if (distance < 20) {
+      return "Really hot!";
+    } else if (distance < 40) {
+      return "Hot!";
+    } else if (distance < 80) {
+      return "Warm";
+    } else if (distance < 160) {
+      return "Cold";
+    } else if (distance < 320) {
+      return "Really cold";
+    } else {
+      return "Freeezing";
+    }
+  };
 
-const getDistance = function (event, target) {
-  let diffX = event.offsetX - target.x;
-  let diffY = event.offsetY - target.y;
-  return Math.sqrt(diffX * diffX + diffY * diffY);
-};
+  let width = 600;
+  let height = 600;
+  let clicks = 0;
 
-//отримуємо рядок що показує відстань
+  // Обработчик события клика на изображении карты
+  $("#map").on("click", function (event) {
+    clicks++;
 
-const getDistanceHint = function (distance) {
-  if (distance < 10) {
-    return "Boiling hot!";
-  } else if (distance < 20) {
-    return "Really hot!";
-  } else if (distance < 40) {
-    return "Hot!";
-  } else if (distance < 80) {
-    return "Warm";
-  } else if (distance < 160) {
-    return "Cold";
-  } else if (distance < 320) {
-    return "Really cold";
-  } else {
-    return "Freeezing";
-  }
-};
+    let target = {
+      x: getRandomNumber(width),
+      y: getRandomNumber(height),
+    };
 
-let width = 600;
-let height = 600;
-let clicks = 0;
+    let distance = getDistance(event, target);
+    let distanceHint = getDistanceHint(distance);
 
-let target = {
-  x: getRandomNumber(width),
-  y: getRandomNumber(height),
-};
+    $("#distance").text(distanceHint);
 
-let distance = getDistance(event, target);
-let distanceHint = getDistanceHint(distance);
-
-$("#distance").text(distanceHint);
-
-if (distance < 8) {
-  alert(`Found the teasure in ${clicks} clicks!`);
-}
+    if (distance < 8) {
+      alert(`Found the treasure in ${clicks} clicks!`);
+    }
+  });
+});
